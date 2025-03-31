@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking, Image, TouchableOpacity } from 'react-native';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import { Info, ExternalLink, BookOpen, Shield, AlertCircle, User } from 'lucide-react-native';
+import { ExternalLink, BookOpen, Shield, AlertCircle, User, Mail } from 'lucide-react-native';
 
 export default function InfoScreen() {
   const colors = useThemeColors();
@@ -10,14 +10,22 @@ export default function InfoScreen() {
     Linking.openURL(url);
   };
   
+  const openEmail = () => {
+    Linking.openURL('mailto:ocufarma.app@gmail.com?subject=Feedback%20OcuFarma');
+  };
+  
   return (
     <ScrollView 
       style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.contentContainer}
     >
       <View style={[styles.header, { backgroundColor: colors.card }]}>
-        <View style={[styles.iconContainer, { backgroundColor: colors.primary + '20' }]}>
-          <Info size={32} color={colors.primary} />
+        <View style={styles.iconContainer}>
+          <Image 
+            source={{ uri: 'https://i.imgur.com/REPLACE_WITH_ACTUAL_URL.png' }} 
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
         </View>
         <Text style={[styles.title, { color: colors.text }]}>Informazioni sull'App</Text>
         <Text style={[styles.subtitle, { color: colors.gray[600] }]}>
@@ -26,7 +34,7 @@ export default function InfoScreen() {
       </View>
       
       <View style={[styles.section, { backgroundColor: colors.card }]}>
-        <Text style={[styles.sectionTitle, { color: colors.text }]}>Autore</Text>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Autori</Text>
         <View style={styles.authorContainer}>
           <View style={[styles.authorImageContainer, { backgroundColor: colors.primary + '20' }]}>
             <User size={24} color={colors.primary} />
@@ -34,6 +42,16 @@ export default function InfoScreen() {
           <View style={styles.authorInfo}>
             <Text style={[styles.authorName, { color: colors.text }]}>Matteo Mario Carlà</Text>
             <Text style={[styles.authorRole, { color: colors.gray[600] }]}>Oftalmologo</Text>
+          </View>
+        </View>
+        
+        <View style={[styles.authorContainer, { marginTop: 16 }]}>
+          <View style={[styles.authorImageContainer, { backgroundColor: colors.primary + '20' }]}>
+            <User size={24} color={colors.primary} />
+          </View>
+          <View style={styles.authorInfo}>
+            <Text style={[styles.authorName, { color: colors.text }]}>Stanislao Rizzo</Text>
+            <Text style={[styles.authorRole, { color: colors.gray[600] }]}>Sviluppatore</Text>
           </View>
         </View>
       </View>
@@ -70,6 +88,20 @@ export default function InfoScreen() {
       </View>
       
       <View style={[styles.section, { backgroundColor: colors.card }]}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Contattaci</Text>
+        <TouchableOpacity 
+          style={[styles.contactButton, { backgroundColor: colors.primary }]} 
+          onPress={openEmail}
+        >
+          <Mail size={20} color="white" style={styles.contactIcon} />
+          <Text style={styles.contactButtonText}>Invia email a ocufarma.app@gmail.com</Text>
+        </TouchableOpacity>
+        <Text style={[styles.contactText, { color: colors.gray[600] }]}>
+          Per domande, suggerimenti o segnalazioni, non esitare a contattarci.
+        </Text>
+      </View>
+      
+      <View style={[styles.section, { backgroundColor: colors.card }]}>
         <Text style={[styles.sectionTitle, { color: colors.text }]}>Disclaimer</Text>
         <View style={styles.disclaimerContainer}>
           <AlertCircle size={20} color={colors.warning} style={styles.disclaimerIcon} />
@@ -98,13 +130,13 @@ export default function InfoScreen() {
       <View style={[styles.section, { backgroundColor: colors.card }]}>
         <Text style={[styles.sectionTitle, { color: colors.text }]}>Versione</Text>
         <Text style={[styles.versionText, { color: colors.gray[600] }]}>
-          Versione 1.0.0
+          Versione 1.1.2
         </Text>
       </View>
       
       <View style={styles.footer}>
         <Text style={[styles.footerText, { color: colors.gray[500] }]}>
-          © 2023 Tutti i diritti riservati
+          © 2025 Tutti i diritti riservati
         </Text>
       </View>
     </ScrollView>
@@ -126,12 +158,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   iconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 120,
+    height: 120,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
+  },
+  logoImage: {
+    width: '100%',
+    height: '100%',
   },
   title: {
     fontSize: 24,
@@ -202,6 +237,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 28,
     marginBottom: 12,
+  },
+  contactButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  contactButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  contactIcon: {
+    marginRight: 8,
+  },
+  contactText: {
+    fontSize: 14,
+    lineHeight: 20,
   },
   disclaimerContainer: {
     flexDirection: 'row',

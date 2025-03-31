@@ -8,7 +8,7 @@ export const categories: Category[] = [
     description: 'Farmaci per il trattamento del glaucoma e dell\'ipertensione oculare',
     icon: Eye,
     color: '#4CAF50',
-    medicationCount: 5
+    medicationCount: 168
   },
   {
     id: 'anti-infective',
@@ -16,7 +16,7 @@ export const categories: Category[] = [
     description: 'Antibiotici, antivirali e antifungini per il trattamento delle infezioni oculari',
     icon: Shield,
     color: '#2196F3',
-    medicationCount: 7
+    medicationCount: 69
   },
   {
     id: 'anti-inflammatory',
@@ -24,7 +24,7 @@ export const categories: Category[] = [
     description: 'Corticosteroidi e FANS per il trattamento dell\'infiammazione oculare',
     icon: Flame,
     color: '#F44336',
-    medicationCount: 2
+    medicationCount: 43
   },
   {
     id: 'anti-allergic',
@@ -32,7 +32,7 @@ export const categories: Category[] = [
     description: 'Antistaminici e stabilizzatori dei mastociti per il trattamento delle allergie oculari',
     icon: Flower,
     color: '#9C27B0',
-    medicationCount: 4
+    medicationCount: 36
   },
   {
     id: 'mydriatic-cycloplegic',
@@ -40,7 +40,7 @@ export const categories: Category[] = [
     description: 'Farmaci per la dilatazione pupillare e la paralisi dell\'accomodazione',
     icon: CircleDot,
     color: '#FF9800',
-    medicationCount: 3
+    medicationCount: 14
   },
   {
     id: 'antiseptic',
@@ -48,7 +48,7 @@ export const categories: Category[] = [
     description: 'Soluzioni antisettiche per la disinfezione della superficie oculare',
     icon: Thermometer,
     color: '#607D8B',
-    medicationCount: 3
+    medicationCount: 8
   },
   {
     id: 'artificial-tears',
@@ -56,7 +56,7 @@ export const categories: Category[] = [
     description: 'Sostituti lacrimali per il trattamento della secchezza oculare',
     icon: Droplets,
     color: '#00BCD4',
-    medicationCount: 5
+    medicationCount: 65
   },
   {
     id: 'supplements',
@@ -64,7 +64,7 @@ export const categories: Category[] = [
     description: 'Integratori alimentari per la salute degli occhi',
     icon: Pill,
     color: '#8BC34A',
-    medicationCount: 5
+    medicationCount: 100
   },
   {
     id: 'diagnostic',
@@ -72,7 +72,7 @@ export const categories: Category[] = [
     description: 'Coloranti e agenti di contrasto per la diagnostica oculare',
     icon: Microscope,
     color: '#795548',
-    medicationCount: 3
+    medicationCount: 5
   },
   {
     id: 'anesthetic',
@@ -80,7 +80,7 @@ export const categories: Category[] = [
     description: 'Anestetici locali per procedure oftalmiche',
     icon: AlertCircle,
     color: '#FF5722',
-    medicationCount: 3
+    medicationCount: 5
   },
   {
     id: 'intravitreal',

@@ -1,19 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, SafeAreaView, Alert } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react-native';
 import { useAuthStore } from '@/store/auth-store';
 import { useThemeColors } from '@/hooks/useThemeColors';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams();
   const colors = useThemeColors();
-  const { login } = useAuthStore();
+  const { login, verifyEmail, resetPassword } = useAuthStore();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  
+  // Gestione del token di verifica email se presente nei parametri
+  useEffect(() => {
+    const verificationToken = params.token as string;
+    
+    if (verificationToken) {
+      handleEmailVerification(verificationToken);
+    }
+  }, [params]);
+  
+  const handleEmailVerification = async (token: string) => {
+    setIsLoading(true);
+    
+    try {
+      const success = await verifyEmail(token);
+      
+      if (success) {
+        Alert.alert(
+          'Email verificata',
+          'La tua email è stata verificata con successo. Ora puoi accedere al tuo account.',
+          [{ text: 'OK' }]
+        );
+      } else {
+        Alert.alert(
+          'Verifica fallita',
+          'Non è stato possibile verificare la tua email. Il token potrebbe essere scaduto o non valido.',
+          [{ text: 'OK' }]
+        );
+      }
+    } catch (error) {
+      Alert.alert('Errore', 'Si è verificato un errore durante la verifica dell\'email');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -28,9 +66,8 @@ export default function LoginScreen() {
       
       if (success) {
         router.replace('/');
-      } else {
-        Alert.alert('Errore di accesso', 'Email o password non validi');
       }
+      // Il messaggio di errore viene gestito all'interno della funzione login
     } catch (error) {
       Alert.alert('Errore', 'Si è verificato un errore durante l\'accesso');
     } finally {
@@ -38,14 +75,30 @@ export default function LoginScreen() {
     }
   };
   
-  const handleRegister = () => {
-    router.push('/register');
+  const handleForgotPassword = async () => {
+    if (!forgotPasswordEmail.trim()) {
+      Alert.alert('Errore', 'Inserisci il tuo indirizzo email');
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      const success = await resetPassword(forgotPasswordEmail);
+      
+      if (success) {
+        setShowForgotPassword(false);
+        setForgotPasswordEmail('');
+      }
+    } catch (error) {
+      Alert.alert('Errore', 'Si è verificato un errore durante il reset della password');
+    } finally {
+      setIsLoading(false);
+    }
   };
   
-  // Per demo, mostra credenziali di accesso
-  const handleDemoLogin = () => {
-    setEmail('demo@example.com');
-    setPassword('password123');
+  const handleRegister = () => {
+    router.push('/register');
   };
 
   const handleBack = () => {
@@ -76,79 +129,117 @@ export default function LoginScreen() {
         <Text style={[styles.title, { color: colors.text }]}>Benvenuto in OcuFarma</Text>
         <Text style={[styles.subtitle, { color: colors.gray[600] }]}>Accedi per gestire le tue terapie</Text>
         
-        <View style={styles.form}>
-          <View style={styles.formGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Email</Text>
-            <TextInput
-              style={[styles.input, { 
-                backgroundColor: colors.gray[100], 
-                color: colors.text 
-              }]}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Inserisci la tua email"
-              placeholderTextColor={colors.gray[400]}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-          
-          <View style={styles.formGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Password</Text>
-            <View style={[styles.passwordContainer, { backgroundColor: colors.gray[100] }]}>
+        {showForgotPassword ? (
+          <View style={styles.form}>
+            <View style={styles.formGroup}>
+              <Text style={[styles.label, { color: colors.text }]}>Email</Text>
               <TextInput
-                style={[styles.passwordInput, { color: colors.text }]}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Inserisci la tua password"
+                style={[styles.input, { 
+                  backgroundColor: colors.gray[100], 
+                  color: colors.text 
+                }]}
+                value={forgotPasswordEmail}
+                onChangeText={setForgotPasswordEmail}
+                placeholder="Inserisci la tua email"
                 placeholderTextColor={colors.gray[400]}
-                secureTextEntry={!showPassword}
+                keyboardType="email-address"
+                autoCapitalize="none"
               />
-              <Pressable 
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeButton}
-              >
-                {showPassword ? (
-                  <EyeOff size={20} color={colors.gray[500]} />
-                ) : (
-                  <Eye size={20} color={colors.gray[500]} />
-                )}
-              </Pressable>
             </View>
+            
+            <Pressable 
+              style={({ pressed }) => [
+                styles.loginButton,
+                { backgroundColor: colors.primary },
+                pressed && styles.buttonPressed,
+                isLoading && styles.buttonDisabled
+              ]}
+              onPress={handleForgotPassword}
+              disabled={isLoading}
+            >
+              <Text style={styles.loginButtonText}>
+                {isLoading ? 'Invio in corso...' : 'Invia istruzioni'}
+              </Text>
+            </Pressable>
+            
+            <Pressable 
+              style={({ pressed }) => [
+                styles.demoButton,
+                { borderColor: colors.primary },
+                pressed && styles.buttonPressed
+              ]}
+              onPress={() => setShowForgotPassword(false)}
+            >
+              <Text style={[styles.demoButtonText, { color: colors.primary }]}>
+                Torna al login
+              </Text>
+            </Pressable>
           </View>
-          
-          <Pressable style={styles.forgotPassword}>
-            <Text style={[styles.forgotPasswordText, { color: colors.primary }]}>Password dimenticata?</Text>
-          </Pressable>
-          
-          <Pressable 
-            style={({ pressed }) => [
-              styles.loginButton,
-              { backgroundColor: colors.primary },
-              pressed && styles.buttonPressed,
-              isLoading && styles.buttonDisabled
-            ]}
-            onPress={handleLogin}
-            disabled={isLoading}
-          >
-            <Text style={styles.loginButtonText}>
-              {isLoading ? 'Accesso in corso...' : 'Accedi'}
-            </Text>
-          </Pressable>
-          
-          <Pressable 
-            style={({ pressed }) => [
-              styles.demoButton,
-              { borderColor: colors.primary },
-              pressed && styles.buttonPressed
-            ]}
-            onPress={handleDemoLogin}
-          >
-            <Text style={[styles.demoButtonText, { color: colors.primary }]}>
-              Usa credenziali demo
-            </Text>
-          </Pressable>
-        </View>
+        ) : (
+          <View style={styles.form}>
+            <View style={styles.formGroup}>
+              <Text style={[styles.label, { color: colors.text }]}>Email</Text>
+              <TextInput
+                style={[styles.input, { 
+                  backgroundColor: colors.gray[100], 
+                  color: colors.text 
+                }]}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Inserisci la tua email"
+                placeholderTextColor={colors.gray[400]}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+            
+            <View style={styles.formGroup}>
+              <Text style={[styles.label, { color: colors.text }]}>Password</Text>
+              <View style={[styles.passwordContainer, { backgroundColor: colors.gray[100] }]}>
+                <TextInput
+                  style={[styles.passwordInput, { color: colors.text }]}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Inserisci la tua password"
+                  placeholderTextColor={colors.gray[400]}
+                  secureTextEntry={!showPassword}
+                />
+                <Pressable 
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeButton}
+                >
+                  {showPassword ? (
+                    <EyeOff size={20} color={colors.gray[500]} />
+                  ) : (
+                    <Eye size={20} color={colors.gray[500]} />
+                  )}
+                </Pressable>
+              </View>
+            </View>
+            
+            <Pressable 
+              style={styles.forgotPassword}
+              onPress={() => setShowForgotPassword(true)}
+            >
+              <Text style={[styles.forgotPasswordText, { color: colors.primary }]}>Password dimenticata?</Text>
+            </Pressable>
+            
+            <Pressable 
+              style={({ pressed }) => [
+                styles.loginButton,
+                { backgroundColor: colors.primary },
+                pressed && styles.buttonPressed,
+                isLoading && styles.buttonDisabled
+              ]}
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              <Text style={styles.loginButtonText}>
+                {isLoading ? 'Accesso in corso...' : 'Accedi'}
+              </Text>
+            </Pressable>
+          </View>
+        )}
         
         <View style={styles.registerContainer}>
           <Text style={[styles.registerText, { color: colors.gray[600] }]}>Non hai un account? </Text>

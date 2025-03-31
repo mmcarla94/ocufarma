@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserRole } from '@/types/medication';
 
 interface User {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
 }
 
 interface AuthState {
@@ -15,7 +17,7 @@ interface AuthState {
   
   // Actions
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, role: UserRole) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -25,7 +27,8 @@ const mockUsers = [
     id: '1',
     name: 'Utente Demo',
     email: 'demo@example.com',
-    password: 'password123'
+    password: 'password123',
+    role: 'paziente' as UserRole
   }
 ];
 
@@ -49,7 +52,8 @@ export const useAuthStore = create<AuthState>()(
             user: { 
               id: user.id, 
               name: user.name, 
-              email: user.email 
+              email: user.email,
+              role: user.role
             },
             token: 'mock-jwt-token'
           });
@@ -59,7 +63,7 @@ export const useAuthStore = create<AuthState>()(
         return false;
       },
       
-      register: async (name, email, password) => {
+      register: async (name, email, password, role) => {
         // Verifica se l'email è già in uso
         const existingUser = mockUsers.find(u => 
           u.email.toLowerCase() === email.toLowerCase()
@@ -74,7 +78,8 @@ export const useAuthStore = create<AuthState>()(
           id: (mockUsers.length + 1).toString(),
           name,
           email,
-          password
+          password,
+          role
         };
         
         mockUsers.push(newUser);
@@ -84,7 +89,8 @@ export const useAuthStore = create<AuthState>()(
           user: { 
             id: newUser.id, 
             name: newUser.name, 
-            email: newUser.email 
+            email: newUser.email,
+            role: newUser.role
           },
           token: 'mock-jwt-token'
         });
@@ -101,4 +107,4 @@ export const useAuthStore = create<AuthState>()(
       storage: createJSONStorage(() => AsyncStorage),
     }
   )
-);
+)

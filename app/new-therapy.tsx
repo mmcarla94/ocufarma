@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, SafeAreaView, Platform, TouchableOpacity } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 import TherapyForm from '@/components/TherapyForm';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { ArrowLeft } from 'lucide-react-native';
@@ -8,6 +8,11 @@ import { ArrowLeft } from 'lucide-react-native';
 export default function NewTherapyScreen() {
   const colors = useThemeColors();
   const router = useRouter();
+  const params = useLocalSearchParams();
+  
+  // Recupera i parametri passati dalla pagina del farmaco
+  const medicationId = params.medicationId as string;
+  const medicationName = params.medicationName as string;
   
   const handleBack = () => {
     router.back();
@@ -43,7 +48,7 @@ export default function NewTherapyScreen() {
       
       <View style={styles.formContainer}>
         <TherapyForm 
-          initialValues={null} 
+          initialValues={medicationId ? { medicationId } : null} 
           onSubmit={() => {
             // Navigate back to therapies tab after successful submission
             router.push('/(tabs)/therapies');

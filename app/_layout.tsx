@@ -7,7 +7,8 @@ import { Platform, useColorScheme } from "react-native";
 import * as Notifications from 'expo-notifications';
 import { useThemeStore } from "@/store/theme-store";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { requestNotificationPermissions } from "@/store/therapy-store";
+import { useTherapyStore } from "@/store/therapy-store";
+import NotificationManager from "@/components/NotificationManager";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -36,30 +37,12 @@ export default function RootLayout() {
   const { useSystemTheme, setTheme } = useThemeStore();
   const colors = useThemeColors();
 
-  // Request notification permissions when app starts
+  // Inizializza il sistema di notifiche all'avvio dell'app
+  // Non estraiamo più la funzione loadTherapies, lasciamo che sia il NotificationManager a gestirla
+  const therapyStore = useTherapyStore();
+  
   useEffect(() => {
-    if (Platform.OS !== 'web') {
-      requestNotificationPermissions();
-    }
-  }, []);
-
-  // Set up notification response handler
-  useEffect(() => {
-    if (Platform.OS !== 'web') {
-      const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-        const data = response.notification.request.content.data;
-        
-        // Handle notification tap
-        if (data && data.therapyId) {
-          // Navigate to therapy details
-          // This would typically use router.push, but we can't use hooks here
-          // Instead, we'll handle this in the therapy screen
-          console.log('Notification tapped for therapy:', data.therapyId);
-        }
-      });
-      
-      return () => subscription.remove();
-    }
+    // Non facciamo nulla qui, la gestione delle notifiche è delegata al NotificationManager
   }, []);
 
   // Sincronizza il tema di sistema con lo store solo se useSystemTheme è true
@@ -85,7 +68,12 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <>
+      <NotificationManager />
+      <RootLayoutNav />
+    </>
+  );
 }
 
 function RootLayoutNav() {

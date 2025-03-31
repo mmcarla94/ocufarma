@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, Switch } from 'react-native';
-import { Settings, LogOut, User, Bell, Moon, HelpCircle } from 'lucide-react-native';
+import { Settings, LogOut, User, Bell, Moon, HelpCircle, Shield } from 'lucide-react-native';
 import { useThemeStore } from '@/store/theme-store';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { useRouter } from 'expo-router';
@@ -101,6 +101,19 @@ export default function ProfileScreen() {
           <View style={styles.settingTextContainer}>
             <Text style={[styles.settingTitle, { color: colors.text }]}>Impostazioni App</Text>
             <Text style={[styles.settingSubtitle, { color: colors.gray[600] }]}>Preferenze e impostazioni account</Text>
+          </View>
+        </Pressable>
+        
+        <Pressable 
+          style={[styles.settingItem, { backgroundColor: colors.card }]}
+          onPress={() => router.push('/support-project')}
+        >
+          <View style={[styles.settingIconContainer, { backgroundColor: colors.primary + '15' }]}>
+            <Shield size={20} color={colors.primary} />
+          </View>
+          <View style={styles.settingTextContainer}>
+            <Text style={[styles.settingTitle, { color: colors.text }]}>Sostieni il Progetto</Text>
+            <Text style={[styles.settingSubtitle, { color: colors.gray[600] }]}>Rimuovi le pubblicità e supporta lo sviluppo</Text>
           </View>
         </Pressable>
       </View>

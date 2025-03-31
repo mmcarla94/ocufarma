@@ -18,7 +18,8 @@ import {
   Settings,
   Search,
   PlusCircle,
-  Barcode
+  Barcode,
+  Shield
 } from 'lucide-react-native';
 
 export default function ProfileScreen() {
@@ -26,13 +27,13 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const { isDarkMode, toggleTheme } = useThemeStore();
-  const { therapies } = useTherapyStore();
-  const { medications } = useMedicationStore();
+  const { stats: therapyStats } = useTherapyStore();
+  const { stats: medicationStats } = useMedicationStore();
   
   // Stats for the user
-  const searchedMedications = 24; // This would come from a real stats store
-  const addedTherapies = therapies.length;
-  const scannedMedications = 7; // This would come from a real stats store
+  const searchedMedications = medicationStats.searchedCount;
+  const addedTherapies = therapyStats.addedCount;
+  const scannedMedications = medicationStats.scannedCount;
   
   const handleLogout = () => {
     logout();
@@ -68,10 +69,10 @@ export default function ProfileScreen() {
           route: '/account-info',
         },
         {
-          icon: Lock,
-          label: 'Sicurezza',
+          icon: Shield,
+          label: 'Sostieni il progetto',
           action: 'navigate',
-          route: '/security',
+          route: '/support-project',
         },
       ],
     },
@@ -89,12 +90,6 @@ export default function ProfileScreen() {
           label: 'Termini e condizioni',
           action: 'navigate',
           route: '/terms',
-        },
-        {
-          icon: Settings,
-          label: 'Impostazioni',
-          action: 'navigate',
-          route: '/settings',
         },
       ],
     },
@@ -117,6 +112,11 @@ export default function ProfileScreen() {
             <Text style={[styles.profileEmail, { color: colors.gray[600] }]}>
               {user?.email || 'utente@example.com'}
             </Text>
+            <View style={[styles.roleTag, { backgroundColor: user?.role === 'medico' ? colors.primary + '20' : colors.success + '20' }]}>
+              <Text style={[styles.roleText, { color: user?.role === 'medico' ? colors.primary : colors.success }]}>
+                {user?.role === 'medico' ? 'Medico' : 'Paziente'}
+              </Text>
+            </View>
           </View>
         </View>
         
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingBottom: 20,
+    paddingBottom: 100, // Increased to avoid content being hidden by tab bar
   },
   profileCard: {
     flexDirection: 'row',
@@ -249,11 +249,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#E5E5E7',
   },
   avatarContainer: {
     width: 60,
@@ -270,19 +267,24 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-  profileEmail: {
-    fontSize: 14,
+  roleTag: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginTop: 8,
+    alignSelf: 'flex-start',
+  },
+  roleText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   // Stats styles
   statsCard: {
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#E5E5E7',
   },
   statsTitle: {
     fontSize: 16,
@@ -326,11 +328,8 @@ const styles = StyleSheet.create({
   menuCard: {
     borderRadius: 12,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#E5E5E7',
   },
   menuItem: {
     flexDirection: 'row',

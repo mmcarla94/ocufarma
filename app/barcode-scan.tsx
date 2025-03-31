@@ -48,16 +48,21 @@ export default function BarcodeScanScreen() {
     setScanned(true);
     setScanResult(data);
     
-    // Simuliamo la ricerca del farmaco tramite codice a barre
-    // In un'app reale, questo sarebbe collegato a un database di codici a barre
+    // Cerchiamo il farmaco tramite codice a barre
     setTimeout(() => {
-      // Per demo, reindirizza al primo farmaco
-      // In un'app reale, cercheremmo il farmaco con il codice a barre corrispondente
-      if (medications.length > 0) {
-        router.replace(`/medication/${medications[0].id}`);
+      // Utilizziamo la nuova funzione per cercare il farmaco in base al barcode
+      const medication = useMedicationStore.getState().searchMedicationByBarcode(data);
+      
+      if (medication) {
+        // Se troviamo il farmaco, navighiamo alla sua pagina
+        router.replace(`/medication/${medication.id}`);
       } else {
-        // Se non ci sono farmaci, torna indietro
-        router.back();
+        // Se non troviamo il farmaco, mostriamo un messaggio e torniamo indietro
+        Alert.alert(
+          'Farmaco non trovato',
+          'Il codice a barre scansionato non corrisponde a nessun farmaco nel database.',
+          [{ text: 'OK', onPress: () => router.back() }]
+        );
       }
     }, 1500);
   };
@@ -65,15 +70,38 @@ export default function BarcodeScanScreen() {
   // Simuliamo una scansione per la versione web
   const simulateScan = () => {
     setScanned(true);
-    setScanResult("123456789");
     
-    setTimeout(() => {
-      if (medications.length > 0) {
-        router.replace(`/medication/${medications[0].id}`);
-      } else {
-        router.back();
-      }
-    }, 1500);
+    // Generiamo un codice a barre casuale tra quelli disponibili
+    const medications = useMedicationStore.getState().medications;
+    if (medications.length > 0) {
+      // Scegliamo un farmaco casuale
+      const randomIndex = Math.floor(Math.random() * medications.length);
+      const randomMedication = medications[randomIndex];
+      
+      // Utilizziamo il suo barcode
+      const barcode = randomMedication.barcode || "123456789";
+      setScanResult(barcode);
+      
+      setTimeout(() => {
+        // Utilizziamo la nuova funzione per cercare il farmaco in base al barcode
+        const medication = useMedicationStore.getState().searchMedicationByBarcode(barcode);
+        
+        if (medication) {
+          // Se troviamo il farmaco, navighiamo alla sua pagina
+          router.replace(`/medication/${medication.id}`);
+        } else {
+          // Se non troviamo il farmaco, mostriamo un messaggio e torniamo indietro
+          Alert.alert(
+            'Farmaco non trovato',
+            'Il codice a barre scansionato non corrisponde a nessun farmaco nel database.',
+            [{ text: 'OK', onPress: () => router.back() }]
+          );
+        }
+      }, 1500);
+    } else {
+      setScanResult("123456789");
+      setTimeout(() => router.back(), 1500);
+    }
   };
   
   if (hasPermission === null && Platform.OS !== 'web') {

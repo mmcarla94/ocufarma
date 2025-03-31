@@ -30,6 +30,7 @@ export default function TabLayout() {
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
+          zIndex: 100, // Add zIndex to ensure it's above other elements
         },
         tabBarShowLabel: false, // Hide labels
         tabBarIconStyle: {

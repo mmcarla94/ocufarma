@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable, Linking } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable, Linking, Image } from 'react-native';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { useRouter } from 'expo-router';
 import { 
-  Info, 
   Mail, 
   Github, 
   Star, 
@@ -14,27 +13,42 @@ import {
   AlertCircle,
   User
 } from 'lucide-react-native';
+import { FeedbackForm } from '@/components/FeedbackForm';
 
 export default function InfoScreen() {
   const colors = useThemeColors();
   const router = useRouter();
   
   const handleEmailPress = () => {
-    Linking.openURL('mailto:support@ocufarma.com');
+    Linking.openURL('mailto:ocufarma.app@gmail.com');
   };
   
   const handleRoadmapPress = () => {
     router.push('/features-roadmap');
   };
   
+  const handleFeedbackSubmit = (feedback: { message: string }) => {
+    try {
+      // Here you would typically send the feedback to your backend
+      Alert.alert('Successo', 'Grazie per il tuo feedback!');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      Alert.alert('Errore', 'Si è verificato un errore durante l\'invio del feedback');
+    }
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.headerTitle, { color: colors.text }]}>Informazioni</Text>
       
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-        <View style={[styles.appInfoCard, { backgroundColor: colors.card }]}>
-          <View style={[styles.logoContainer, { backgroundColor: colors.primary + '20' }]}>
-            <Info size={32} color={colors.primary} />
+        <View style={[styles.appInfoCard, { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1 }]}>
+          <View style={styles.logoContainer}>
+            <Image 
+              source={require('@/assets/images/ocufarma-logo.png')} 
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
           </View>
           
           <View style={styles.appInfoContent}>
@@ -46,8 +60,8 @@ export default function InfoScreen() {
           </View>
         </View>
         
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Sviluppatore</Text>
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1 }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Sviluppatori</Text>
           <View style={styles.developerContainer}>
             <View style={[styles.developerAvatar, { backgroundColor: colors.primary + '20' }]}>
               <User size={24} color={colors.primary} />
@@ -57,9 +71,19 @@ export default function InfoScreen() {
               <Text style={[styles.developerRole, { color: colors.gray[600] }]}>Oftalmologo</Text>
             </View>
           </View>
-        </View>
-        
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
+
+          <View style={styles.developerContainer}> 
+            <View style={[styles.developerAvatar, { backgroundColor: colors.primary + '20' }]}>
+              <User size={24} color={colors.primary} />
+            </View>
+            <View style={styles.developerInfo}>
+              <Text style={[styles.developerName, { color: colors.text }]}>Stanislao Rizzo</Text>
+              <Text style={[styles.developerRole, { color: colors.gray[600] }]}>Oftalmologo</Text>
+            </View>
+          </View>
+          </View>
+                  
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1 }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Fonti dei Dati</Text>
           <View style={styles.sourceItem}>
             <BookOpen size={20} color={colors.primary} style={styles.sourceIcon} />
@@ -92,7 +116,7 @@ export default function InfoScreen() {
           </View>
         </View>
         
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1 }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Disclaimer</Text>
           <View style={styles.disclaimerContainer}>
             <AlertCircle size={20} color={colors.warning} style={styles.disclaimerIcon} />
@@ -102,7 +126,7 @@ export default function InfoScreen() {
           </View>
         </View>
         
-        <View style={[styles.menuCard, { backgroundColor: colors.card }]}>
+        <View style={[styles.menuCard, { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1 }]}>
           <Pressable
             style={({ pressed }) => [
               styles.menuItem,
@@ -138,8 +162,13 @@ export default function InfoScreen() {
           </Pressable>
         </View>
         
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1 }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Feedback</Text>
+          <FeedbackForm onSubmit={handleFeedbackSubmit} />
+        </View>
+        
         <Text style={[styles.copyright, { color: colors.gray[500] }]}>
-          © 2023 OcuFarma. Tutti i diritti riservati.
+          © 2025 OcuFarma. Tutti i diritti riservati.
         </Text>
       </ScrollView>
     </SafeAreaView>
@@ -162,26 +191,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingBottom: 20,
+    paddingBottom: 100, // Increased to avoid content being hidden by tab bar
   },
   appInfoCard: {
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
     alignItems: 'center',
   },
   logoContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 120,
+    height: 120,
     marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoImage: {
+    width: '100%',
+    height: '100%',
   },
   appInfoContent: {
     alignItems: 'center',
@@ -203,11 +230,6 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
   },
   sectionTitle: {
     fontSize: 18,
@@ -268,11 +290,6 @@ const styles = StyleSheet.create({
   menuCard: {
     borderRadius: 12,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
     marginBottom: 24,
   },
   menuItem: {

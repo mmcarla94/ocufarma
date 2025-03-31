@@ -11,7 +11,7 @@ import {
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { SearchBar } from '@/components/SearchBar';
 import { X } from 'lucide-react-native';
-import { mockMedications } from '@/mocks/medications';
+import { useMedicationStore } from '@/store/medication-store';
 
 interface MedicationSearchModalProps {
   visible: boolean;
@@ -27,12 +27,13 @@ export const MedicationSearchModal: React.FC<MedicationSearchModalProps> = ({
   selectedMedicationId
 }) => {
   const colors = useThemeColors();
+  const { medications } = useMedicationStore();
   const [searchQuery, setSearchQuery] = useState('');
   
-  const filteredMedications = mockMedications.filter(med => 
+  const filteredMedications = medications?.filter(med => 
     med.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     med.activeIngredient.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) || [];
   
   const handleSelect = (medicationId: string) => {
     onSelect(medicationId);
@@ -41,7 +42,7 @@ export const MedicationSearchModal: React.FC<MedicationSearchModalProps> = ({
   
   const getSelectedMedication = () => {
     if (!selectedMedicationId) return null;
-    return mockMedications.find(med => med.id === selectedMedicationId);
+    return medications?.find(med => med.id === selectedMedicationId);
   };
   
   const selectedMedication = getSelectedMedication();

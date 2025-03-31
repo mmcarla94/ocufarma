@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react-native';
+import { Eye, EyeOff, ArrowLeft, ChevronDown } from 'lucide-react-native';
 import { useAuthStore } from '@/store/auth-store';
 import { useThemeColors } from '@/hooks/useThemeColors';
+import { UserRole } from '@/types/medication';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -14,9 +15,12 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState<UserRole>('paziente');
+  const [showRoleOptions, setShowRoleOptions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [registrationComplete, setRegistrationComplete] = useState(false);
   
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !password.trim()) {
@@ -32,15 +36,17 @@ export default function RegisterScreen() {
     setIsLoading(true);
     
     try {
-      const success = await register(name, email, password);
+      const success = await register(name, email, password, role);
       
       if (success) {
-        Alert.alert('Registrazione completata', 'Il tuo account è stato creato con successo', [
-          { text: 'OK', onPress: () => router.replace('/') }
-        ]);
-      } else {
-        Alert.alert('Errore', 'Email già in uso o errore durante la registrazione');
+        setRegistrationComplete(true);
+        Alert.alert(
+          'Registrazione completata', 
+          'Il tuo account è stato creato con successo. Ti abbiamo inviato un\'email di conferma all\'indirizzo fornito. Per favore, verifica la tua email per attivare il tuo account.',
+          [{ text: 'OK', onPress: () => router.replace('/login') }]
+        );
       }
+      // I messaggi di errore sono gestiti all'interno della funzione register
     } catch (error) {
       Alert.alert('Errore', 'Si è verificato un errore durante la registrazione');
     } finally {
@@ -54,6 +60,19 @@ export default function RegisterScreen() {
 
   const handleBack = () => {
     router.back();
+  };
+  
+  const toggleRoleOptions = () => {
+    setShowRoleOptions(!showRoleOptions);
+  };
+  
+  const selectRole = (selectedRole: UserRole) => {
+    setRole(selectedRole);
+    setShowRoleOptions(false);
+  };
+  
+  const getRoleLabel = (role: UserRole) => {
+    return role === 'medico' ? 'Medico' : 'Paziente';
   };
   
   return (
@@ -114,6 +133,44 @@ export default function RegisterScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
             />
+          </View>
+          
+          <View style={styles.formGroup}>
+            <Text style={[styles.label, { color: colors.text }]}>Ruolo</Text>
+            <View style={styles.roleSelectContainer}>
+              <Pressable 
+                style={[styles.roleSelect, { backgroundColor: colors.gray[100] }]}
+                onPress={toggleRoleOptions}
+              >
+                <Text style={[styles.roleSelectText, { color: colors.text }]}>
+                  {getRoleLabel(role)}
+                </Text>
+                <ChevronDown size={20} color={colors.gray[500]} />
+              </Pressable>
+              
+              {showRoleOptions && (
+                <View style={[styles.roleOptions, { backgroundColor: colors.gray[100] }]}>
+                  <Pressable 
+                    style={[
+                      styles.roleOption,
+                      role === 'medico' && { backgroundColor: colors.gray[200] }
+                    ]}
+                    onPress={() => selectRole('medico')}
+                  >
+                    <Text style={[styles.roleOptionText, { color: colors.text }]}>Medico</Text>
+                  </Pressable>
+                  <Pressable 
+                    style={[
+                      styles.roleOption,
+                      role === 'paziente' && { backgroundColor: colors.gray[200] }
+                    ]}
+                    onPress={() => selectRole('paziente')}
+                  >
+                    <Text style={[styles.roleOptionText, { color: colors.text }]}>Paziente</Text>
+                  </Pressable>
+                </View>
+              )}
+            </View>
           </View>
           
           <View style={styles.formGroup}>
@@ -245,6 +302,41 @@ const styles = StyleSheet.create({
   },
   eyeButton: {
     padding: 12,
+  },
+  roleSelectContainer: {
+    position: 'relative',
+    zIndex: 1,
+  },
+  roleSelect: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 8,
+    padding: 12,
+  },
+  roleSelectText: {
+    fontSize: 16,
+  },
+  roleOptions: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    borderRadius: 8,
+    marginTop: 4,
+    overflow: 'hidden',
+    zIndex: 2,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  roleOption: {
+    padding: 12,
+  },
+  roleOptionText: {
+    fontSize: 16,
   },
   registerButton: {
     borderRadius: 8,

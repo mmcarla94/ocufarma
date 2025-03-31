@@ -10,7 +10,7 @@ export const subcategories: Record<MedicationCategory, SubcategoryInfo[]> = {
   // Anti-Glaucoma
   'anti-glaucoma': [
     { id: 'beta-blockers', name: 'Beta-bloccanti' },
-    { id: 'prostaglandin-analogs', name: 'Analoghi delle prostaglandine' },
+    { id: 'prostaglandins', name: 'Analoghi delle prostaglandine' },
     { id: 'alpha-agonists', name: 'Alfa-agonisti' },
     { id: 'carbonic-anhydrase-inhibitors', name: 'Inibitori dell\'anidrasi carbonica' },
     { id: 'cholinergic-agonists', name: 'Agonisti colinergici' },
@@ -22,7 +22,7 @@ export const subcategories: Record<MedicationCategory, SubcategoryInfo[]> = {
     { id: 'antibiotics', name: 'Antibiotici' },
     { id: 'antivirals', name: 'Antivirali' },
     { id: 'antifungals', name: 'Antifungini' },
-    { id: 'combined-anti-infective', name: 'Anti-infettivi combinati' },
+    { id: 'combinations', name: 'Anti-infettivi combinati' },
     { id: 'ointment', name: 'Unguento/Pomata oftalmica' }
   ],
 
@@ -61,8 +61,8 @@ export const subcategories: Record<MedicationCategory, SubcategoryInfo[]> = {
     { id: 'aqueous', name: 'Lacrime acquose' },
     { id: 'lipidic', name: 'Lacrime lipidiche' },
     { id: 'high-tech', name: 'Lacrime high-tech' },
-    { id: 'preservative-free', name: 'Senza conservanti' },
-    { id: 'gel-formulations', name: 'Formulazioni in gel' }
+    { id: 'gel-formulations', name: 'Formulazioni in gel' },
+    { id: 'others', name: 'Altre' }
   ],
 
   // Supplements
@@ -91,6 +91,5 @@ export const subcategories: Record<MedicationCategory, SubcategoryInfo[]> = {
   'intravitreal': [
     { id: 'anti-vegf', name: 'Anti-VEGF' },
     { id: 'steroids-intravitreal', name: 'Steroidi intravitreali' },
-    { id: 'antibiotics-intravitreal', name: 'Antibiotici intravitreali' }
   ]
 };

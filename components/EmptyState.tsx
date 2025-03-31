@@ -116,9 +116,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    marginBottom: 80, // Add bottom margin to avoid navigation bar
   },
   compactContainer: {
     padding: 10,
+    marginBottom: 60, // Smaller margin for compact version
   },
   iconContainer: {
     width: 100,

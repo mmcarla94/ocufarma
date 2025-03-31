@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable, Image, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Search, Plus, Barcode, LogIn, UserPlus } from 'lucide-react-native';
+import { Search, Plus, Barcode, LogIn, UserPlus, X } from 'lucide-react-native';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { categories } from '@/mocks/categories';
 import { CategoryCard } from '@/components/CategoryCard';
 import { FloatingActionButton } from '@/components/FloatingActionButton';
 import { SearchBar } from '@/components/SearchBar';
+import { useMedicationStore } from '@/store/medication-store';
+import { MedicationCard } from '@/components/MedicationCard';
+import { EmptyState } from '@/components/EmptyState';
 
 export default function HomeScreen() {
   const router = useRouter();
   const colors = useThemeColors();
   const [searchQuery, setSearchQuery] = useState('');
   const [layoutType, setLayoutType] = useState<'grid' | 'list'>('list'); // 'grid' for 2-column, 'list' for full width
+  const { searchMedications } = useMedicationStore();
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  
+  // Effetto per aggiornare i risultati della ricerca quando l'utente digita
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+    
+    setIsSearching(true);
+    const results = searchMedications(searchQuery);
+    setSearchResults(results);
+  }, [searchQuery]);
   
   const handleSearch = () => {
     // Navigate to search screen without query to ensure keyboard appears
@@ -39,11 +58,23 @@ export default function HomeScreen() {
     setLayoutType(layoutType === 'grid' ? 'list' : 'grid');
   };
   
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setIsSearching(false);
+  };
+  
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
         <View>
-          <Text style={[styles.title, { color: colors.primary }]}>OcuFarma</Text>
+          <Image
+            source={require('@/assets/images/logo-home.png')}
+            style={{
+              width: 120,
+              height: 120,
+              resizeMode: 'contain'
+            }}
+          />
           <Text style={[styles.subtitle, { color: colors.gray[600] }]}>Farmaci Oftalmologici</Text>
         </View>
         <View style={styles.headerButtons}>
@@ -78,41 +109,72 @@ export default function HomeScreen() {
         />
       </View>
       
-      <ScrollView 
-        style={styles.content}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Categorie</Text>
-          <Pressable onPress={toggleLayout}>
-            <Text style={[styles.layoutToggle, { color: colors.primary }]}>
-              {layoutType === 'grid' ? 'Vista lista' : 'Vista griglia'}
+      {isSearching ? (
+        <View style={styles.searchResultsContainer}>
+          <View style={styles.searchResultsHeader}>
+            <Text style={[styles.searchResultsTitle, { color: colors.text }]}>
+              Risultati per "{searchQuery}"
             </Text>
-          </Pressable>
-        </View>
-        
-        <View style={[
-          styles.categoriesContainer,
-          layoutType === 'grid' ? styles.gridContainer : null
-        ]}>
-          {categories.map((category) => (
-            <CategoryCard 
-              key={category.id} 
-              category={category} 
-              fullWidth={layoutType === 'list'}
+            <Pressable onPress={handleClearSearch} style={styles.clearButton}>
+              <X size={20} color={colors.gray[500]} />
+            </Pressable>
+          </View>
+          
+          {searchResults.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <EmptyState
+                title="Nessun risultato"
+                message={`Nessun farmaco trovato per "${searchQuery}"`}
+                icon={<Search size={48} color={colors.gray[300]} />}
+              />
+            </View>
+          ) : (
+            <FlatList
+              data={searchResults}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <MedicationCard medication={item} />}
+              contentContainerStyle={styles.searchResultsList}
+              showsVerticalScrollIndicator={false}
             />
-          ))}
+          )}
         </View>
-        
-        <Pressable 
-          style={[styles.addTherapyButton, { backgroundColor: colors.primary }]}
-          onPress={handleAddTherapy}
+      ) : (
+        <ScrollView 
+          style={styles.content}
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
         >
-          <Plus size={20} color="white" style={styles.addIcon} />
-          <Text style={styles.addTherapyText}>Aggiungi Nuova Terapia</Text>
-        </Pressable>
-      </ScrollView>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Categorie</Text>
+            <Pressable onPress={toggleLayout}>
+              <Text style={[styles.layoutToggle, { color: colors.primary }]}>
+                {layoutType === 'grid' ? 'Vista lista' : 'Vista griglia'}
+              </Text>
+            </Pressable>
+          </View>
+          
+          <View style={[
+            styles.categoriesContainer,
+            layoutType === 'grid' ? styles.gridContainer : null
+          ]}>
+            {categories.map((category) => (
+              <CategoryCard 
+                key={category.id} 
+                category={category} 
+                fullWidth={layoutType === 'list'}
+              />
+            ))}
+          </View>
+          
+          <Pressable 
+            style={[styles.addTherapyButton, { backgroundColor: colors.primary }]}
+            onPress={handleAddTherapy}
+          >
+            <Plus size={20} color="white" style={styles.addIcon} />
+            <Text style={styles.addTherapyText}>Aggiungi Nuova Terapia</Text>
+          </Pressable>
+        </ScrollView>
+      )}
       
       <FloatingActionButton 
         onPress={handleSearch}
@@ -134,8 +196,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 28, // Reverted from 36px back to 28px
+    fontWeight: '700', // Reverted from 800 back to 700
     marginLeft: 12,
   },
   subtitle: {
@@ -207,5 +269,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
+  },
+  searchResultsContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  searchResultsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  searchResultsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  clearButton: {
+    padding: 8,
+  },
+  searchResultsList: {
+    paddingBottom: 120, // Extra padding for the floating button
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
 });

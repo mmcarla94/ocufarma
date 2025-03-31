@@ -19,7 +19,7 @@ const webTargetOrigins = [
   "https://rork.app",
 ];    
 
-function sendErrorToIframeParent(error: any, errorInfo?: any) {
+function sendErrorToIframeParent(error: Error | unknown, errorInfo?: React.ErrorInfo) {
   if (Platform.OS === 'web' && typeof window !== 'undefined') {
     console.debug('Sending error to parent:', {
       error,
@@ -30,8 +30,8 @@ function sendErrorToIframeParent(error: any, errorInfo?: any) {
     const errorMessage = {
       type: 'ERROR',
       error: {
-        message: error?.message || error?.toString() || 'Unknown error',
-        stack: error?.stack,
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
         componentStack: errorInfo?.componentStack,
         timestamp: new Date().toISOString(),
       },
@@ -49,31 +49,7 @@ function sendErrorToIframeParent(error: any, errorInfo?: any) {
   }
 }
 
-if (Platform.OS === 'web' && typeof window !== 'undefined') {
-  window.addEventListener('error', (event) => {
-    event.preventDefault();
-    const errorDetails = event.error ?? {
-      message: event.message ?? 'Unknown error',
-      filename: event.filename ?? 'Unknown file',
-      lineno: event.lineno ?? 'Unknown line',
-      colno: event.colno ?? 'Unknown column'
-    };
-    sendErrorToIframeParent(errorDetails);
-  }, true);
-
-  window.addEventListener('unhandledrejection', (event) => {
-    event.preventDefault();
-    sendErrorToIframeParent(event.reason);
-  }, true);
-
-  const originalConsoleError = console.error;
-  console.error = (...args) => {
-    sendErrorToIframeParent(args.join(' '));
-    originalConsoleError.apply(console, args);
-  };
-}
-
-export class ErrorBoundary extends React.Component<Props, State> {
+class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -143,3 +119,24 @@ const styles = StyleSheet.create({
 }); 
 
 export default ErrorBoundary;
+
+if (Platform.OS === 'web' && typeof window !== 'undefined') {
+  const errorHandler = (event: ErrorEvent) => {
+    event.preventDefault();
+    sendErrorToIframeParent(event.error ?? event.message);
+  };
+
+  const rejectionHandler = (event: PromiseRejectionEvent) => {
+    event.preventDefault();
+    sendErrorToIframeParent(event.reason);
+  };
+
+  window.addEventListener('error', errorHandler, true);
+  window.addEventListener('unhandledrejection', rejectionHandler, true);
+
+  // Cleanup event listeners when the component is unmounted
+  window.addEventListener('beforeunload', () => {
+    window.removeEventListener('error', errorHandler, true);
+    window.removeEventListener('unhandledrejection', rejectionHandler, true);
+  });
+}

@@ -1,0 +1,805 @@
+import { Medication } from '@/types/medication';
+
+// Anti-Allergic medications
+const antiallergicMedications: Medication[] = [
+  {
+    id: 'AA1',
+    name: 'Allergodil',
+    activeIngredient: 'Azelastina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'antihistamines',
+    description: 'Antistaminico H1 di seconda generazione che inibisce il rilascio di istamina e altri mediatori dai mastociti e basofili.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno. Se necessario, può essere aumentato fino a quattro volte al giorno.',
+    sideEffects: 'Lieve irritazione oculare transitoria, sapore amaro, secchezza oculare, cefalea.',
+    contraindications: 'Ipersensibilità all\'azelastina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Meda Pharma',
+    price: {
+      amount: 12.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA2',
+    name: 'Collirio Alfa Antistaminico',
+    activeIngredient: 'Nafazolina/Antazolina',
+    concentration: '0.05%/0.5%',
+    category: 'anti-allergic',
+    subcategory: 'combined-anti-allergic',
+    description: 'Combinazione di un vasocostrittore e un antistaminico per il trattamento sintomatico delle congiuntiviti allergiche.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Alfa Intes',
+    price: {
+      amount: 9.80,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA3',
+    name: 'Brunicrom',
+    activeIngredient: 'Cromoglicato di sodio',
+    concentration: '2%',
+    category: 'anti-allergic',
+    subcategory: 'mast-cell-stabilizers',
+    description: 'Stabilizzatore dei mastociti che previene il rilascio di istamina e altri mediatori dell\'infiammazione allergica.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 4 volte al giorno, a intervalli regolari.',
+    sideEffects: 'Lieve bruciore o irritazione oculare transitoria, prurito, lacrimazione.',
+    contraindications: 'Ipersensibilità al cromoglicato di sodio o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Bruschettini',
+    price: {
+      amount: 11.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA4',
+    name: 'Fexactiv',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Alfa Intes',
+    price: {
+      amount: 13.20,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA5',
+    name: 'Brunistill',
+    activeIngredient: 'Levocabastina',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'antihistamines',
+    description: 'Antistaminico H1 di seconda generazione ad azione rapida e prolungata per il trattamento delle congiuntiviti allergiche.',
+    dosage: 'Una goccia nell\'occhio(i) interessato 2-4 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore o irritazione oculare transitoria, cefalea, affaticamento.',
+    contraindications: 'Ipersensibilità alla levocabastina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Bruschettini',
+    price: {
+      amount: 12.80,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA6',
+    name: 'Brinus',
+    activeIngredient: 'Olopatadina cloridrato',
+    concentration: '0.1%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 selettivo con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, a circa 8 ore di distanza.',
+    sideEffects: 'Lieve bruciore o irritazione oculare, secchezza oculare, cefalea, disgeusia.',
+    contraindications: 'Ipersensibilità all\'olopatadina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Bruschettini',
+    price: {
+      amount: 14.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA7',
+    name: 'Collirio Alfa Decongestionante',
+    activeIngredient: 'Nafazolina nitrato',
+    concentration: '0.1%',
+    category: 'anti-allergic',
+    subcategory: 'decongestants',
+    description: 'Vasocostrittore ad azione rapida per il sollievo temporaneo dell\'iperemia congiuntivale.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Alfa Intes',
+    price: {
+      amount: 8.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA8',
+    name: 'Eustamyl',
+    activeIngredient: 'Cromoglicato di sodio',
+    concentration: '2%',
+    category: 'anti-allergic',
+    subcategory: 'mast-cell-stabilizers',
+    description: 'Stabilizzatore dei mastociti che previene il rilascio di istamina e altri mediatori dell\'infiammazione allergica nelle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato 4 volte al giorno, a intervalli regolari. Nei casi più gravi, la frequenza può essere aumentata.',
+    sideEffects: 'Lieve bruciore o irritazione oculare transitoria, prurito, lacrimazione.',
+    contraindications: 'Ipersensibilità al cromoglicato di sodio o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 10.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA9',
+    name: 'Imidazyl Antistaminico',
+    activeIngredient: 'Nafazolina/Antazolina',
+    concentration: '0.05%/0.5%',
+    category: 'anti-allergic',
+    subcategory: 'combined-anti-allergic',
+    description: 'Combinazione di un vasocostrittore e un antistaminico per il trattamento sintomatico delle congiuntiviti allergiche e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Novartis',
+    price: {
+      amount: 9.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA10',
+    name: 'Imolast',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Visufarma',
+    price: {
+      amount: 12.80,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA11',
+    name: 'Ketazed',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Medivis',
+    price: {
+      amount: 13.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA12',
+    name: 'Ketirix',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Sooft Italia',
+    price: {
+      amount: 13.20,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA13',
+    name: 'Ketoftil',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 12.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA14',
+    name: 'Kinofta',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Visufarma',
+    price: {
+      amount: 13.40,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA15',
+    name: 'Lastafry',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Alfa Intes',
+    price: {
+      amount: 12.70,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA16',
+    name: 'Lecrosine',
+    activeIngredient: 'Cromoglicato di sodio',
+    concentration: '2%',
+    category: 'anti-allergic',
+    subcategory: 'mast-cell-stabilizers',
+    description: 'Stabilizzatore dei mastociti che previene il rilascio di istamina e altri mediatori dell\'infiammazione allergica nelle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 4 volte al giorno, a intervalli regolari.',
+    sideEffects: 'Lieve bruciore o irritazione oculare transitoria, prurito, lacrimazione.',
+    contraindications: 'Ipersensibilità al cromoglicato di sodio o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 11.20,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA17',
+    name: 'Levoreact Oftalmico',
+    activeIngredient: 'Levocabastina',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'antihistamines',
+    description: 'Antistaminico H1 di seconda generazione ad azione rapida e prolungata per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato 2-4 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore o irritazione oculare transitoria, cefalea, affaticamento.',
+    contraindications: 'Ipersensibilità alla levocabastina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Johnson & Johnson',
+    price: {
+      amount: 13.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA18',
+    name: 'Naaxia - Collirio',
+    activeIngredient: 'Acido N-acetilaspartico',
+    concentration: '0.2%',
+    category: 'anti-allergic',
+    subcategory: 'lubricants',
+    description: 'Collirio lubrificante con proprietà protettive per il trattamento delle irritazioni oculari e delle congiuntiviti allergiche lievi.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 3-4 volte al giorno, secondo necessità.',
+    sideEffects: 'Raramente lieve bruciore o irritazione oculare transitoria.',
+    contraindications: 'Ipersensibilità all\'acido N-acetilaspartico o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 10.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA19',
+    name: 'Octilia Allergia E Infiammazione',
+    activeIngredient: 'Tetrizolina/Feniramina',
+    concentration: '0.05%/0.05%',
+    category: 'anti-allergic',
+    subcategory: 'combined-anti-allergic',
+    description: 'Combinazione di un vasocostrittore e un antistaminico per il trattamento sintomatico delle congiuntiviti allergiche e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 9.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA20',
+    name: 'Opatanol',
+    activeIngredient: 'Olopatadina cloridrato',
+    concentration: '0.1%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 selettivo con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, a circa 8 ore di distanza.',
+    sideEffects: 'Lieve bruciore o irritazione oculare, secchezza oculare, cefalea, disgeusia.',
+    contraindications: 'Ipersensibilità all\'olopatadina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Novartis',
+    price: {
+      amount: 15.80,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA21',
+    name: 'Pollival',
+    activeIngredient: 'Azelastina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'antihistamines',
+    description: 'Antistaminico H1 di seconda generazione che inibisce il rilascio di istamina e altri mediatori dai mastociti e basofili per il trattamento delle congiuntiviti allergiche.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno. Se necessario, può essere aumentato fino a quattro volte al giorno.',
+    sideEffects: 'Lieve irritazione oculare transitoria, sapore amaro, secchezza oculare, cefalea.',
+    contraindications: 'Ipersensibilità all\'azelastina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'URSAPHARM',
+    price: {
+      amount: 12.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA22',
+    name: 'Relestat',
+    activeIngredient: 'Epinastina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'antihistamines',
+    description: 'Antistaminico H1 selettivo per il trattamento delle congiuntiviti allergiche stagionali.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno.',
+    sideEffects: 'Bruciore o irritazione oculare, prurito, iperemia congiuntivale, cefalea.',
+    contraindications: 'Ipersensibilità all\'epinastina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Allergan',
+    price: {
+      amount: 14.20,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA23',
+    name: 'Zaditen Oftabak',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni. Formulazione senza conservanti.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Thea Farma',
+    price: {
+      amount: 14.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA24',
+    name: 'Bysabel - Soluzione',
+    activeIngredient: 'Acido ialuronico',
+    concentration: '0.15%',
+    category: 'anti-allergic',
+    subcategory: 'lubricants',
+    description: 'Soluzione lubrificante e idratante per il trattamento della secchezza oculare associata a congiuntiviti allergiche.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 3-4 volte al giorno, secondo necessità.',
+    sideEffects: 'Raramente lieve bruciore o irritazione oculare transitoria.',
+    contraindications: 'Ipersensibilità all\'acido ialuronico o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 11.80,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA25',
+    name: 'Iridina Due - Collirio',
+    activeIngredient: 'Tetrizolina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'decongestants',
+    description: 'Vasocostrittore ad azione rapida per il sollievo temporaneo dell\'iperemia congiuntivale e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Montefarmaco OTC',
+    price: {
+      amount: 8.50,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA26',
+    name: 'Iridina Light',
+    activeIngredient: 'Tetrizolina cloridrato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'decongestants',
+    description: 'Vasocostrittore a bassa concentrazione per il sollievo temporaneo dell\'iperemia congiuntivale e delle irritazioni oculari lievi.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare (meno frequenti rispetto alle formulazioni a concentrazione più elevata).',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Montefarmaco OTC',
+    price: {
+      amount: 8.20,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA27',
+    name: 'Octilia',
+    activeIngredient: 'Tetrizolina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'decongestants',
+    description: 'Vasocostrittore ad azione rapida per il sollievo temporaneo dell\'iperemia congiuntivale e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 8.70,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA28',
+    name: 'Oftalmil',
+    activeIngredient: 'Zinco solfato/Nafazolina nitrato',
+    concentration: '0.25%/0.02%',
+    category: 'anti-allergic',
+    subcategory: 'combined-anti-allergic',
+    description: 'Combinazione di un vasocostrittore e zinco solfato con proprietà astringenti per il trattamento delle irritazioni oculari e delle congiuntiviti allergiche lievi.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmigea',
+    price: {
+      amount: 9.30,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA29',
+    name: 'Tebarat',
+    activeIngredient: 'Acido cromoglicico',
+    concentration: '2%',
+    category: 'anti-allergic',
+    subcategory: 'mast-cell-stabilizers',
+    description: 'Stabilizzatore dei mastociti che previene il rilascio di istamina e altri mediatori dell\'infiammazione allergica nelle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 4 volte al giorno, a intervalli regolari.',
+    sideEffects: 'Lieve bruciore o irritazione oculare transitoria, prurito, lacrimazione.',
+    contraindications: 'Ipersensibilità all\'acido cromoglicico o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmila-Thea',
+    price: {
+      amount: 11.40,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA30',
+    name: 'Tetramil',
+    activeIngredient: 'Tetrizolina/Feniramina',
+    concentration: '0.05%/0.05%',
+    category: 'anti-allergic',
+    subcategory: 'combined-anti-allergic',
+    description: 'Combinazione di un vasocostrittore e un antistaminico per il trattamento sintomatico delle congiuntiviti allergiche e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Montefarmaco OTC',
+    price: {
+      amount: 9.60,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA31',
+    name: 'Tirocular',
+    activeIngredient: 'Acetilcisteina',
+    concentration: '5%',
+    category: 'anti-allergic',
+    subcategory: 'lubricants',
+    description: 'Mucolitico con proprietà antiossidanti per il trattamento della secchezza oculare e delle irritazioni associate a congiuntiviti allergiche.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 3-4 volte al giorno, secondo necessità.',
+    sideEffects: 'Raramente lieve bruciore o irritazione oculare transitoria.',
+    contraindications: 'Ipersensibilità all\'acetilcisteina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Sooft Italia',
+    price: {
+      amount: 12.30,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA32',
+    name: 'Paveket',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Medivis',
+    price: {
+      amount: 13.10,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA33',
+    name: 'Visiofen',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Visufarma',
+    price: {
+      amount: 13.30,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA34',
+    name: 'Visuglican',
+    activeIngredient: 'Sodio cromoglicato/Clorfenamina',
+    concentration: '2%/0.01%',
+    category: 'anti-allergic',
+    subcategory: 'combined-anti-allergic',
+    description: 'Combinazione di un stabilizzatore dei mastociti e un antistaminico per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 3-4 volte al giorno, secondo necessità.',
+    sideEffects: 'Lieve bruciore o irritazione oculare transitoria, prurito, secchezza oculare.',
+    contraindications: 'Ipersensibilità al sodio cromoglicato, alla clorfenamina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Visufarma',
+    price: {
+      amount: 12.70,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA35',
+    name: 'Visustrin – Decongestionanti',
+    activeIngredient: 'Tetrizolina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'decongestants',
+    description: 'Vasocostrittore ad azione rapida per il sollievo temporaneo dell\'iperemia congiuntivale e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Visufarma',
+    price: {
+      amount: 8.80,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA36',
+    name: 'Reluviz',
+    activeIngredient: 'Ketotifene fumarato',
+    concentration: '0.025%',
+    category: 'anti-allergic',
+    subcategory: 'dual-action',
+    description: 'Antistaminico H1 con proprietà di stabilizzazione dei mastociti per il trattamento delle congiuntiviti allergiche stagionali e perenni.',
+    dosage: 'Una goccia nell\'occhio(i) interessato due volte al giorno, mattina e sera.',
+    sideEffects: 'Bruciore o irritazione oculare, secchezza oculare, prurito, cefalea, sonnolenza.',
+    contraindications: 'Ipersensibilità al ketotifene o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Medivis',
+    price: {
+      amount: 13.20,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA37',
+    name: 'Visumetazone',
+    activeIngredient: 'Desametasone/Clorfenamina',
+    concentration: '0.1%/0.01%',
+    category: 'anti-allergic',
+    subcategory: 'corticosteroids',
+    description: 'Combinazione di un corticosteroide e un antistaminico per il trattamento delle congiuntiviti allergiche moderate o gravi.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 3-4 volte al giorno, secondo necessità. Utilizzare per brevi periodi.',
+    sideEffects: 'Aumento della pressione intraoculare, cataratta, ritardo nella guarigione delle ferite, maggiore suscettibilità alle infezioni.',
+    contraindications: 'Glaucoma, infezioni oculari virali, micotiche o tubercolari, cheratite erpetica, ipersensibilità al desametasone, alla clorfenamina o a qualsiasi componente della formulazione.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: true,
+    manufacturer: 'Visufarma',
+    price: {
+      amount: 14.90,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  },
+  {
+    id: 'AA38',
+    name: 'Stilla Decongestionante',
+    activeIngredient: 'Tetrizolina cloridrato',
+    concentration: '0.05%',
+    category: 'anti-allergic',
+    subcategory: 'decongestants',
+    description: 'Vasocostrittore ad azione rapida per il sollievo temporaneo dell\'iperemia congiuntivale e delle irritazioni oculari.',
+    dosage: 'Una o due gocce nell\'occhio(i) interessato 2-3 volte al giorno, secondo necessità.',
+    sideEffects: 'Bruciore, prurito, iperemia di rimbalzo, midriasi, aumento della pressione intraoculare.',
+    contraindications: 'Glaucoma ad angolo chiuso, bambini sotto i 12 anni, ipertensione arteriosa, malattie cardiovascolari gravi.',
+    imageUrl: 'https://images.unsplash.com/photo-1585435557343-3b348031e799?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+    packageImageUrl: 'https://www.farmaciaigea.com/img/p/3/0/5/4/3054-large_default.jpg',
+    requiresPrescription: false,
+    manufacturer: 'Farmila-Thea',
+    price: {
+      amount: 8.40,
+      currency: '€',
+      source: 'Farmacia IGEA'
+    }
+  }
+];
+
+export default antiallergicMedications;

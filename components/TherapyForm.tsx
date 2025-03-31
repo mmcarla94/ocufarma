@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, Alert, Modal,
 import { useRouter } from 'expo-router';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { ChevronDown, Search, AlertTriangle, Clock, Bell, Eye, Plus, Trash2, Barcode } from 'lucide-react-native';
-import { mockMedications } from '@/mocks/medications';
+import { useMedicationStore } from '@/store/medication-store';
 import { MedicationSearchModal } from '@/components/MedicationSearchModal';
-import { useTherapyStore } from '@/store/therapy-store';
+import { useTherapyStore, verifyScheduledNotifications } from '@/store/therapy-store';
 import { EyeSelection } from '@/types/medication';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -16,6 +16,7 @@ export const TherapyForm = ({ initialValues, onSubmit: parentOnSubmit }) => {
   const router = useRouter();
   const colors = useThemeColors();
   const { addTherapy, updateTherapy, checkInteractions } = useTherapyStore();
+  const { medications } = useMedicationStore();
   
   const [medication, setMedication] = useState(initialValues?.medicationId || '');
   const [eye, setEye] = useState<EyeSelection>(initialValues?.eye || 'both');
@@ -133,9 +134,30 @@ export const TherapyForm = ({ initialValues, onSubmit: parentOnSubmit }) => {
     }
   };
   
+  // Validate time format (HH:MM)
+  const isValidTimeFormat = (time: string): boolean => {
+    // Check if the time matches the HH:MM format
+    if (!/^\d{2}:\d{2}$/.test(time)) {
+      return false;
+    }
+    
+    // Extract hours and minutes
+    const [hours, minutes] = time.split(':').map(Number);
+    
+    // Validate hours (0-23) and minutes (0-59)
+    return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
+  };
+  
   const handleSubmit = async () => {
     if (!medication || !eye || !frequency || times.length === 0) {
       Alert.alert('Errore', 'Per favore compila tutti i campi obbligatori');
+      return;
+    }
+    
+    // Validate all time entries
+    const invalidTimes = times.filter(time => !isValidTimeFormat(time));
+    if (invalidTimes.length > 0) {
+      Alert.alert('Errore', 'Uno o più orari non sono nel formato corretto (HH:MM)');
       return;
     }
     
@@ -174,6 +196,11 @@ export const TherapyForm = ({ initialValues, onSubmit: parentOnSubmit }) => {
                   parentOnSubmit(therapyData);
                 }
                 
+                // Verify notifications were scheduled correctly (for debugging)
+                if (Platform.OS !== 'web' && enableNotifications) {
+                  await verifyScheduledNotifications();
+                }
+                
                 // Navigate back to the therapies tab
                 router.push('/(tabs)/therapies');
               } catch (error) {
@@ -199,6 +226,11 @@ export const TherapyForm = ({ initialValues, onSubmit: parentOnSubmit }) => {
           parentOnSubmit(therapyData);
         }
         
+        // Verify notifications were scheduled correctly (for debugging)
+        if (Platform.OS !== 'web' && enableNotifications) {
+          await verifyScheduledNotifications();
+        }
+        
         // Navigate back to the therapies tab
         router.push('/(tabs)/therapies');
       } catch (error) {
@@ -214,7 +246,7 @@ export const TherapyForm = ({ initialValues, onSubmit: parentOnSubmit }) => {
   
   const getSelectedMedicationName = () => {
     if (!medication) return '';
-    const selectedMed = mockMedications.find(med => med.id === medication);
+    const selectedMed = medications.find(med => med.id === medication);
     return selectedMed ? selectedMed.name : '';
   };
   
@@ -233,6 +265,12 @@ export const TherapyForm = ({ initialValues, onSubmit: parentOnSubmit }) => {
   const handleSaveTime = () => {
     if (!currentEditingTime) {
       Alert.alert('Errore', 'Per favore inserisci un orario valido');
+      return;
+    }
+    
+    // Validate time format
+    if (!isValidTimeFormat(currentEditingTime)) {
+      Alert.alert('Errore', 'Formato orario non valido. Usa il formato HH:MM (es. 09:00)');
       return;
     }
     

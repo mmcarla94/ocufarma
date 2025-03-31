@@ -31,7 +31,7 @@ export interface Category {
   count: number;
 }
 
-export type EyeSelection = 'right' | 'left' | 'both';
+export type UserRole = 'medico' | 'paziente' | 'premium';
 
 export interface Therapy {
   id: string;
@@ -49,6 +49,7 @@ export interface Therapy {
   completedDoses?: {
     date: string;
     time: string;
-    completed: boolean;
+    status: 'completed' | 'skipped' | 'postponed';
+    originalTime?: string; // Per tenere traccia dell'orario originale quando posticipato
   }[];
 }

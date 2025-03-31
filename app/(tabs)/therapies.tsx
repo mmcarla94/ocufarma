@@ -24,17 +24,12 @@ export default function TherapiesScreen() {
       {therapies.length === 0 ? (
         <View style={styles.emptyContainer}>
           <EmptyState
+            icon="Pill"
             title="Nessuna terapia"
-            message="Aggiungi i tuoi programmi di farmaci per ricevere promemoria"
+            description="Aggiungi i tuoi programmi di farmaci per ricevere promemoria"
+            actionLabel="Aggiungi Nuova Terapia"
+            onAction={handleAddTherapy}
           />
-          
-          <Pressable 
-            style={[styles.addButton, { backgroundColor: colors.primary }]}
-            onPress={handleAddTherapy}
-          >
-            <PlusCircle size={20} color="white" style={styles.addIcon} />
-            <Text style={styles.addButtonText}>Aggiungi Nuova Terapia</Text>
-          </Pressable>
         </View>
       ) : (
         <>
@@ -84,29 +79,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
-  },
-  addButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 24,
-  },
-  addIcon: {
-    marginRight: 8,
-  },
-  addButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: 'white',
+    marginBottom: 80, // Add bottom margin to avoid navigation bar
   },
   listContent: {
-    paddingBottom: 80,
+    paddingBottom: 140, // Increased to avoid content being hidden by tab bar
   },
   fabContainer: {
     position: 'absolute',
-    bottom: 80,
+    bottom: 140, // Increased significantly to position well above the tab bar
     right: 24,
   },
   fab: {

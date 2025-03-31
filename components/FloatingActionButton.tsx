@@ -47,7 +47,7 @@ export function FloatingActionButton({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 80, // Increased from 20 to 80 to position above the tab bar
+    bottom: 80, // Changed from 40 to 80 as requested
     right: 24,
     zIndex: 10,
   },
@@ -57,11 +57,6 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   buttonWithLabel: {
     flexDirection: 'row',

@@ -2,30 +2,49 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Medication, MedicationCategory } from '@/types/medication';
-import { mockMedications } from '@/mocks/medications';
+import { medications } from '@/mocks/medications';
 
 interface MedicationState {
   medications: Medication[];
-  favorites: string[]; // Array of medication IDs
+  favorites: string[];
   isLoading: boolean;
   error: string | null;
+  stats: {
+    searchedCount: number;
+    scannedCount: number;
+  };
   
   // Actions
   addToFavorites: (id: string) => void;
   removeFromFavorites: (id: string) => void;
   isFavorite: (id: string) => boolean;
+  incrementSearchCount: () => void;
+  incrementScanCount: () => void;
   
   // Filters
   filterByCategory: (category: MedicationCategory) => Medication[];
   searchMedications: (query: string) => Medication[];
+  searchMedicationByBarcode: (barcode: string) => Medication | null;
   getFavorites: () => Medication[];
   
   // Interactions
   checkInteractions: (medicationId1: string, medicationId2: string) => string | null;
 }
 
+// Aggiungiamo i codici a barre ai farmaci di esempio
+const medicationsWithBarcodes = medications.map((med, index) => {
+  // Generiamo un codice a barre univoco per ogni farmaco
+  // In un'app reale, questi sarebbero i veri codici a barre dei farmaci
+  const barcode = `978${(1000000 + parseInt(med.id)).toString().padStart(10, '0')}`;
+  
+  return {
+    ...med,
+    barcode
+  };
+});
+
 // Add sample interactions to medications
-const medicationsWithInteractions = mockMedications.map(med => {
+const medicationsWithInteractions = medicationsWithBarcodes.map(med => {
   // Only add interactions to certain medications for demonstration
   if (med.id === '1') { // Timolol
     return {
@@ -92,6 +111,10 @@ export const useMedicationStore = create<MedicationState>()(
       favorites: [],
       isLoading: false,
       error: null,
+      stats: {
+        searchedCount: 0,
+        scannedCount: 0
+      },
       
       addToFavorites: (id) => {
         set((state) => ({
@@ -113,14 +136,45 @@ export const useMedicationStore = create<MedicationState>()(
         return get().medications.filter(med => med.category === category);
       },
       
+      incrementSearchCount: () => {
+        set((state) => ({
+          stats: {
+            ...state.stats,
+            searchedCount: state.stats.searchedCount + 1
+          }
+        }));
+      },
+      
+      incrementScanCount: () => {
+        set((state) => ({
+          stats: {
+            ...state.stats,
+            scannedCount: state.stats.scannedCount + 1
+          }
+        }));
+      },
+      
       searchMedications: (query) => {
         if (!query.trim()) return get().medications;
+        
+        // Increment search count when a real search is performed
+        get().incrementSearchCount();
         
         const lowercaseQuery = query.toLowerCase();
         return get().medications.filter(med => 
           med.name.toLowerCase().includes(lowercaseQuery) || 
           med.activeIngredient.toLowerCase().includes(lowercaseQuery)
         );
+      },
+      
+      searchMedicationByBarcode: (barcode) => {
+        // Incrementiamo il contatore delle scansioni
+        get().incrementScanCount();
+        
+        // Cerchiamo il farmaco con il codice a barre corrispondente
+        const medication = get().medications.find(med => med.barcode === barcode);
+        
+        return medication || null;
       },
       
       getFavorites: () => {

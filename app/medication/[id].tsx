@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Pressable, Linking, Alert, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { useMedicationStore } from '@/store/medication-store';
 import { Heart, Clock, AlertCircle, ExternalLink, ShoppingCart, FileText, Pill, Check, X, ArrowLeft, Info, Droplets, Beaker, Building, Package, AlertTriangle } from 'lucide-react-native';
 import { useTherapyStore } from '@/store/therapy-store';
 import { useThemeColors } from '@/hooks/useThemeColors';
+import { usePremiumStore } from '@/store/premium-store';
+import { AdBanner } from '@/components/AdBanner';
 
 export default function MedicationDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -12,8 +14,37 @@ export default function MedicationDetailScreen() {
   const colors = useThemeColors();
   const { medications, isFavorite, addToFavorites, removeFromFavorites } = useMedicationStore();
   const { checkInteractions } = useTherapyStore();
+  const { incrementMedicationsViewed, shouldShowAd, setAdShown, adFrequency } = usePremiumStore();
+  const [showAd, setShowAd] = useState(false);
+  const [adType, setAdType] = useState<'banner' | 'interstitial'>('interstitial');
   
   const medication = medications.find(med => med.id === id);
+  
+  // Gestione delle pubblicità
+  useEffect(() => {
+    // Incrementa il contatore dei farmaci visualizzati
+    const viewCount = incrementMedicationsViewed();
+    
+    // Verifica se mostrare una pubblicità
+    if (shouldShowAd()) {
+      // Determina il tipo di annuncio in base al contatore
+      // Mostra un interstitial ogni 3-4 farmaci (in base a adFrequency)
+      // e un banner negli altri casi
+      setAdType(viewCount % (adFrequency * 2) === 0 ? 'interstitial' : 'banner');
+      
+      // Mostra la pubblicità con un leggero ritardo per permettere il caricamento della pagina
+      const adTimer = setTimeout(() => {
+        setShowAd(true);
+        setAdShown(); // Registra che una pubblicità è stata mostrata
+      }, 1000);
+      
+      return () => clearTimeout(adTimer);
+    }
+  }, []);
+  
+  const handleCloseAd = () => {
+    setShowAd(false);
+  };
   
   if (!medication) {
     return (
@@ -149,10 +180,18 @@ export default function MedicationDetailScreen() {
   );
   
   return (
-    <ScrollView 
-      style={[styles.container, { backgroundColor: colors.background }]} 
-      showsVerticalScrollIndicator={false}
-    >
+    <>
+      <ScrollView 
+        style={[styles.container, { backgroundColor: colors.background }]} 
+        showsVerticalScrollIndicator={false}
+      >
+      <AdBanner 
+        isVisible={showAd} 
+        onClose={handleCloseAd} 
+        adType={adType}
+        adDuration={adType === 'interstitial' ? 5 : 0} // 5 secondi per interstitial, 0 per banner (sempre visibile)
+        testMode={true} // Modalità test attiva
+      />
       <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.gray[200] }]}>
         <Pressable 
           style={[styles.backButtonHeader, { backgroundColor: colors.background + '80' }]}
@@ -423,6 +462,16 @@ export default function MedicationDetailScreen() {
         </Text>
       </View>
     </ScrollView>
+    
+    {/* Componente per mostrare le pubblicità */}
+    <AdBanner 
+      isVisible={showAd} 
+      onClose={handleCloseAd} 
+      adType={adType}
+      adDuration={adType === 'interstitial' ? 5 : 0} // 5 secondi per interstitial, 0 per banner (sempre visibile)
+      testMode={true} // Modalità test attiva
+    />
+    </>
   );
 }
 

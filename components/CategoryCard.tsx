@@ -39,7 +39,6 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, fullWidth 
           { 
             backgroundColor: category.color + '20', // Light colored background
             borderColor: colors.border,
-            shadowColor: category.color,
           }
         ]}
         onPress={handlePress}
@@ -87,7 +86,6 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, fullWidth 
         { 
           backgroundColor: category.color + '15', // More visible background color (15% opacity)
           borderColor: colors.border,
-          shadowColor: category.color,
         }
       ]}
       onPress={handlePress}
@@ -129,11 +127,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderWidth: 1,
     height: 130, // Reduced height
-    // 3D effect
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 5,
   },
   cardContent: {
     flex: 1,
@@ -168,11 +161,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1,
     height: 110, // Reduced height
-    // Enhanced 3D effect
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 5,
   },
   fullWidthContent: {
     flexDirection: 'row',
